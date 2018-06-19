@@ -1,0 +1,25 @@
+﻿
+
+@model IEnumerable<NerdDinner.Models.Dinner>
+@{
+    ViewBag.Title = "Store";
+}
+
+    <h2>Upcoming Dinners</h2>
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+    <ul>
+        @foreach (var dinner in Model)
+        {
+            
+            <li>
+                <h4>
+                @Html.ActionLink(dinner.Title, "Details", new { id = dinner.DinnerID })
+                at
+                @Html.Encode(dinner.EventDate.ToShortDateString())
+                @Html.Encode(dinner.EventDate.ToShortTimeString())
+                </h4>
+            </li>
+        }
+    </ul>

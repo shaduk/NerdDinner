@@ -1,0 +1,128 @@
+﻿@model NerdDinner.Models.Dinner
+
+@{
+    ViewBag.Title = "Details";
+}
+<script src="~/Scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+<h2>Details</h2>
+
+<div>
+    <h4>Dinner</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EventDate)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EventDate)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Description)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Description)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HostedBy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HostedBy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Country)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Country)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Latitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Latitude)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Longitude)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Longitude)
+        </dd>
+
+    </dl>
+</div>
+
+<div id="divResult">
+    @if (Request.IsAuthenticated)
+    {
+
+        if (Model.IsUserRegistered(Context.User.Identity.Name))
+        {
+
+            <p style="color:red">You are registred for this event!</p>
+
+        }
+        else
+        {
+            <p style="color:red">You are not registered for this event</p>
+            <input id="btnRegister" type="submit" name="Register" value="Register" />
+            <script>
+
+                function AnimateRSVPMessage() {
+                    $("#divResult").animate({ fontSize: "1.5em", color : "red" }, 400);
+                }
+
+                $('#btnRegister').click(function (e) {
+                    $.ajax({
+                        // edit to add steve's suggestion.
+                        //url: "/ControllerName/ActionName",
+                        url: '@Url.Action("Register", "RSVP")',
+                        data: { id: '@(Model.DinnerID)' },
+                        success: function (data) {
+                            // your data could be a View or Json or what ever you returned in your action method
+                            // parse your data here
+                            $("#divResult").html(data);
+                            AnimateRSVPMessage();
+                            alert("You are registered");
+                        }
+                    });
+                });
+            </script>
+        }
+    }
+    else
+    {
+        <a href="/Account/Login"> Logon</a> <p> to RSVP for this event. </p>
+    }
+</div>
+
+<p>
+    @Html.ActionLink("Delete", "Delete", new { id = Model.DinnerID }) |
+    @Html.ActionLink("Edit", "Edit", new { id = Model.DinnerID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
